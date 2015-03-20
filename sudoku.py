@@ -2,13 +2,18 @@
 
 # Returns an integer index
 def to_base(i, j, k, base):
-    return base**2 * (i - 1) + base * (j - 1) + (k - 1) + 1
+    return base*base * (i - 1) + base * (j - 1) + (k - 1) + 1
 
 # Returns a 3 tuple (i, j, k)
-def from_base_nine(n):
-    pass
+def from_base(n, base):
+    n = n - 1
+    k = n % base + 1
+    j = int(((n - (k - 1)) / base) % base + 1)
+    i = int(((n - (k - 1)) - 9 * (j - 1))/ 81) + 1
+    return (i, j, k)
 
 # Should equal 324
-pt = (4, 9, 9)
+pt = (9, 4, 9)
 print (pt)
-print (to_base_nine(pt[0], pt[1], pt[2]))
+print (to_base(pt[0], pt[1], pt[2], 9))
+print (from_base(to_base(pt[0], pt[1], pt[2], 9), 9))
