@@ -1,21 +1,10 @@
 #!/usr/bin/python3
 
-# Returns an integer index
-def to_base(i, j, k, base):
-    return base*base * (i - 1) + base * (j - 1) + (k - 1) + 1
+from rules import rule4, every_cell_has_number
 
-# Returns a 3 tuple (i, j, k)
-def from_base(n, base):
-    n = n - 1
-    k = n % base + 1
-    j = int(((n - (k - 1)) / base) % base + 1)
-    i = int(((n - (k - 1)) - base * (j - 1))/ (base * base)) + 1
-    return (i, j, k)
-
-# Should equal 324
-pt = (9, 4, 9)
-print (pt)
-print (to_base(pt[0], pt[1], pt[2], 9))
-print (from_base(to_base(pt[0], pt[1], pt[2], 9), 9))
-
-input_string = input()
+base = 9
+output_filename = input("Enter Filename:")
+with open(output_filename, mode="w") as f:
+    write_string = every_cell_has_number(base)
+    write_string += rule4(base)
+    f.write(write_string)
