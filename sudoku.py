@@ -9,7 +9,7 @@ def from_base(n, base):
     n = n - 1
     k = n % base + 1
     j = int(((n - (k - 1)) / base) % base + 1)
-    i = int(((n - (k - 1)) - 9 * (j - 1))/ 81) + 1
+    i = int(((n - (k - 1)) - base * (j - 1))/ (base * base)) + 1
     return (i, j, k)
 
 # Should equal 324
@@ -17,3 +17,5 @@ pt = (9, 4, 9)
 print (pt)
 print (to_base(pt[0], pt[1], pt[2], 9))
 print (from_base(to_base(pt[0], pt[1], pt[2], 9), 9))
+
+input_string = input()
