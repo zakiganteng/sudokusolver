@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from rules import rule4, every_cell_has_number, rule3, rule5
+from rules import *
 
 base = 9
 # output_filename = input("Enter Filename:")

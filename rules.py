@@ -1,5 +1,6 @@
 # Rules imports or defines all functions
-from minimalEncoding import every_cell_has_number
-from rule4 import rule4
-from rule4 import rule5
+from rule1 import rule1
+from rule2 import rule2
 from rule3 import rule3
+from rule4 import rule4
+from rule5 import rule5
