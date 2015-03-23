@@ -23,7 +23,7 @@ def rule2(base):
     rule = "c Each number appears at most once in every row\n"
     variables = base**3
     clauses = 0
-    rule_clasues = ""
+    rule_clauses = ""
     
     for i in range(1,base):
         for k in range(1, base):
