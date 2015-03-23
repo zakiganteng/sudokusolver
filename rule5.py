@@ -2,9 +2,9 @@ from xmath import to_base
 
 def rule5(base):
     rules = []
-    for k in range(1, 10):
-        for a in range(3):
-            for b in range(3):
+    for k in range(1, base+1):
+        for a in range(base/3):
+            for b in range(base/3):
                 for u in range(1, 3):
                     for v in range(1, 4):
                         for w in range(u+1, 4):
