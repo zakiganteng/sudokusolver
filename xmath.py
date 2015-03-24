@@ -9,3 +9,8 @@ def from_base(n, base):
     j = int(((n - (k - 1)) / base) % base + 1)
     i = int(((n - (k - 1)) - base * (j - 1))/ (base * base)) + 1
     return (i, j, k)
+    
+#converts 2D coordinates to an index in a string
+def to_index(i,j):
+    index = i + base*j
+    return index
