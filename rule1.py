@@ -8,12 +8,16 @@ def rule1(base, board):
     for i in range(1, base+1):
         for j in range(1, base+1):
             val = board[to_index(i,j, base)]
+            ors = []
             if val == '0':
                 for k in range(1, base+1):
-                    rules.append(-to_base(i, j, k, base))
+                    ors.append(-to_base(i, j, k, base))
             else:
-                rules.append(-to_base(i, j, val, base))
+                ors.append(-to_base(i, j, val, base))
+            rules.append(ors)
     ret_string = 'p cnf {0} {1}\n'.format(base**3, len(rules))
-    for i in rules:
-        ret_string += '{0} 0\n'.format(i)
+    for ors in rules:
+        for val in ors:
+            ret_string += val + " "
+        ret_string += "0\n"
     return ret_string
