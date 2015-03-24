@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 
 from rules import *
+from print_functions import print_board, convert_board
 
+input_filename = input("Input Filename: ")
 base = 9
-# output_filename = input("Enter Filename:")
+with open(input_filename, "r") as inf:
+    board = convert_board(inf.read())
 output_filename = "cnf"
 write_string = ""
 with open(output_filename, mode="w") as f:

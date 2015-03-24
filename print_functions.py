@@ -1,6 +1,7 @@
 #!/bin/python
 from math import sqrt
 from xmath import to_index
+import re
 
 # from xmath import to_index
 def print_board(b):
@@ -8,17 +9,23 @@ def print_board(b):
     height = width
     if (width * height != len(b)):
         print ("Error! Invalid Board")
-    print ("Length: ", len(b), width, height)
     for y in range(0, height):
-        print ("\n")
         for x in range(0, width):
             print(b[to_index(x, y, width)], end=" ")
-    print ("\n")
+        print ("\n")
+
+def convert_board(b_original):
+    b_original = b_original.strip()
+    return re.sub("[^0-9]", "0", b_original)
+
 
 
 
 if __name__ == "__main__":
-    print_board("163805070008040065005007008450082039301000040700000000839050000604200590000093081")
+    b = "1638.5.7..*8040065005007008450082039301000040700000000839050000604200590000093081"
+    print_board(b)
+    print()
+    print_board(convert_board(b))
 
 
 
