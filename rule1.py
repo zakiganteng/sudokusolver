@@ -1,18 +1,19 @@
 # Minimal Encoding
 from xmath import to_base
+from xmath import to_index
 
 # Every cell contains at least one number
-def rule1(base):
-    rule = "c Every cell contains at least one number\n"
-    variables = base**3
-    clauses = base**2
-    rule += "p cnf {0} {1}\n".format(variables, clauses)
-    clause = ""
-    for i in range(1, base):
-        for j in range(1, base):
-            for k in range(1, base):
-                variable = to_base(i, j, k, base)
-                clause += "{0} ".format(variable)
-            rule += clause
-            rule += "0\n"
-    return rule
+def rule1(base, board):
+    rules = []
+    for i in range(1, base+1):
+        for j in range(1, base+1):
+            val = board[to_index(i,j, base)]
+            if val == '0':
+                for k in range(1, base+1):
+                    rules.append(-to_base(i, j, k, base))
+            else:
+                rules.append(-to_base(i, j, val, base))
+    ret_string = 'p cnf {0} {1}\n'.format(base**3, len(rules))
+    for i in rules:
+        ret_string += '{0} 0\n'.format(i)
+    return ret_string
