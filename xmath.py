@@ -11,6 +11,5 @@ def from_base(n, base):
     return (i, j, k)
     
 #converts 2D coordinates to an index in a string
-def to_index(i,j):
-    index = i + base*j
-    return index
+def to_index(i,j,base):
+    return i + base*j
