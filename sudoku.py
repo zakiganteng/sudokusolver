@@ -9,8 +9,9 @@ with open(input_filename, "r") as inf:
     board = convert_board(inf.read())
 output_filename = "cnf"
 write_string = ""
+print (board)
 with open(output_filename, mode="w") as f:
-    write_string += rule1(base)
+    write_string += rule1(base, board)
     write_string += rule2(base)
     write_string += rule3(base)
     write_string += rule4(base)
