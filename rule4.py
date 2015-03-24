@@ -4,8 +4,8 @@ import math
 def rule4(base):
     rules = []
     for k in range(1, base+1):
-        for a in range(math.sqrt(base)):
-            for b in range(math.sqrt(base)):
+        for a in range(int(math.sqrt(base))):
+            for b in range(int(math.sqrt(base))):
                 for u in range(1, 4):
                     for v in range(1, 3):
                         for w in range(v+1, 4):

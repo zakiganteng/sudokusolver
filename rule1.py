@@ -11,9 +11,9 @@ def rule1(base, board):
             ors = []
             if val == '0':
                 for k in range(1, base+1):
-                    ors.append(-to_base(i, j, k, base))
+                    ors.append(to_base(i, j, k, base))
             else:
-                ors.append(-to_base(i, j, val, base))
+                ors.append(to_base(i, j, val, base))
             rules.append(ors)
     ret_string = 'p cnf {0} {1}\n'.format(base**3, len(rules))
     for ors in rules:
