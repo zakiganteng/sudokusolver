@@ -2,6 +2,9 @@ from xmath import to_base
 import math
 
 def ext_rule1(base):
+
+    note: THIS DOESN'T WORK
+        the first variable is an OR not an AND
     rules = []
     base_sqrt = int(math.sqrt(base))
     for z in range(1, base+1):
