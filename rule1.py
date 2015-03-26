@@ -3,24 +3,17 @@ from xmath import to_base
 from xmath import to_index
 
 # Every cell contains at least one number
-def rule1(base, board):
+def rule1(base):
     rules = []
-    count = 0
+    rule = ""
+    clauses = 0
     for i in range(1, base+1):
-        for j in range(1, base+1):
-            val = board[to_index(i-1,j-1, base)]
-            ors = []
-            if val == '0':
-                for k in range(1, base+1):
-                    ors.append(to_base(i, j, k, base))
-                    count += 1
-            else:
-                ors.append(to_base(i, j, val, base))
-                count += 1
-            rules.append(ors)
-    ret_string = 'p cnf {0} {1}\n'.format(count, len(rules))
-    for ors in rules:
-        for val in ors:
-            ret_string += str(val) + " "
-        ret_string += "0\n"
+        for j in range(1, base + 1):
+            for k in range(1, base + 1):
+                rule += "{0} ".format(to_base(i, j, k, base))
+            rule += "0\n"
+            clauses += 1
+            rules.append(rule)
+    ret_string = "p cnf {0} {1}\n".format(base * base * base, clauses)
+    ret_string += rule
     return ret_string
