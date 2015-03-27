@@ -14,11 +14,26 @@ def print_board(b):
             print(b[to_index(x, y, width)], end=" ")
         print ("\n")
 
+def output_board(b):
+    width = int(sqrt(len(b)))
+    height = width
+    ret_str = ""
+    if (width * height != len(b)):
+        print ("Error! Invalid Board")
+        return ""
+    for y in range(0, height):
+        for x in range(0, width):
+            ret_str += b[to_index(x, y, width)] + " "
+        ret_str += "\n"
+    return ret_str
+
+
 def convert_board(b_original):
-    b_original = b_original.strip()
+    b_original = b_original.replace("\n", "")
+    b_original = b_original.replace("\t", "")
+    b_original = b_original.replace(" ", "")
+    b_original = re.sub(" \n", "", b_original)
     return re.sub("[^0-9]", "0", b_original)
-
-
 
 
 if __name__ == "__main__":
