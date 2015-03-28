@@ -61,6 +61,7 @@ print ("Variables: ", variables)
 
 print ("Board requirements: ")
 dimacs_output += "c the board requirements\n"
+
 for j in range(0, size):
     for i in range(0, size):
         value = int(board[to_index(i, j, size)])
@@ -151,6 +152,14 @@ print ("Solved board:")
 
 # Clean solved board
 solved_board = solved_board.split()
+if (solved_board[0] != "SAT"):
+    print ("Unsolvable puzzle")
+    exit(1)
+# Remove "SAT"
+solved_board.pop(0)
+
+
+# convert to string
 sb = ""
 for s in solved_board:
     try:
@@ -159,11 +168,15 @@ for s in solved_board:
             (i, j, k) = from_base(l, size)
             sb += str(k)
     except:
-        print ("yeah...")
+        pass
 
-
-
-args.outputfile.write(output_board(sb))
+# rebuild the solved board non-transpose
+fixed = ""
+for i in range(0, size):
+    for j in range(0, size):
+        fixed += sb[to_index(i, j, size)]
+print (output_board(fixed))
+args.outputfile.write(output_board(fixed))
 
 
 
