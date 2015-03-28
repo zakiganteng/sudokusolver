@@ -98,6 +98,32 @@ for i in range(1, size + 1):
                         to_base(i_s, j, k, size))
                 clauses += 1
 
+dimacs_output += "c 3x3 block constrain\n"
+
+sq = int(sqrt(size))
+for k in range(1, size + 1):
+    for a in range(sq):
+        for b in range(sq):
+            for u in range(1, sq+1):
+                for v in range(1, sq):
+                    for w in range(v + 1, sq + 1):
+                        dimacs_output += "-{0} -{1} 0\n".format(
+                                to_base(sq*a + u, sq*b + v, k, size),
+                                to_base(sq*a + u, sq*b + w, k, size))
+                        clauses += 1
+for k in range(1, size + 1):
+    for a in range(sq):
+        for b in range(sq):
+            for u in range(1, sq):
+                for v in range(1, sq+1):
+                    for w in range(u + 1, sq+1):
+                        for t in range(1, sq+1):
+                            dimacs_output += "-{0} -{1} 0\n".format(
+                                    to_base(sq*a+u, sq*b+v, k, size),
+                                    to_base(sq*a+w, sq*b+t, k, size))
+                            clauses += 1
+
+
 dimacs_output = "p cnf {0} {1}\n".format(variables, clauses) + dimacs_output
 
 # Write to file
