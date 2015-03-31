@@ -155,11 +155,11 @@ for x in range(1, size+1):
 # ext rule 4
 dimacs_output += 'c Each number appears at least once in each box\n'
 base_sqrt = int(sqrt(size))
-for roff in range(0, base_sqrt-1):
-    for coff in range(0, base_sqrt-1):
+for roff in range(0, base_sqrt):
+    for coff in range(0, base_sqrt):
         for k in range(1, size+1):
-            for i in range(1, size+1):
-                for j in range(1, size+1):
+            for i in range(1, base_sqrt+1):
+                for j in range(1, base_sqrt+1):
                     dimacs_output += '{0} '.format(to_base(base_sqrt*roff + i,
                         base_sqrt*coff + j, k, size))
             dimacs_output += '0\n'
