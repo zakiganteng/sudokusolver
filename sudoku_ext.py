@@ -125,6 +125,7 @@ for k in range(1, size + 1):
                             clauses += 1
 
 # ext rule 1
+dimacs_output += 'c There is at most one number in each entry\n'
 for x in range(1, base+1):
     for y in range(1, base+1):
         for z in range(1, base):
@@ -133,6 +134,7 @@ for x in range(1, base+1):
                 clauses+=1
 
 # ext rule 2
+dimacs_output += 'c Each number appears at least once in each row\n'
 for y in range(1, base+1):
     for z in range(1, base+1):
         for x in range(1, base+1):
@@ -141,6 +143,7 @@ for y in range(1, base+1):
         clauses += 1
 
 # ext rule 3
+dimacs_output += 'c Each number appears at least once in each column\n'
 for x in range(1, base+1):
     for z in range(1, base+1):
         for y in range(1, base+1):
@@ -149,6 +152,7 @@ for x in range(1, base+1):
         clauses+=1
 
 # ext rule 4
+dimacs_output += 'c Each number appears at least once in each box'
 base_sqrt = int(math.sqrt(base))
 for roff in range(0, base_sqrt-1):
     for coff in range(0, base_sqrt-1):
