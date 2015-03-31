@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 # -------------------------------------------------------------------
 # sudoku2.py
 #
@@ -13,12 +12,6 @@
 # Mar 27 2015
 #
 # -------------------------------------------------------------------
-
-# Yes, I am aware that this file is ugly, but it is closer to working than we
-# were before...
-# Doesn't check the within the box -- rule 5
-# Resulting board is transposed. we need to flip it back
-# Shayla and I were running into this a little before
 
 from print_functions import print_board, convert_board, output_board
 from math import sqrt
