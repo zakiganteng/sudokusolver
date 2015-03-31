@@ -152,7 +152,7 @@ for x in range(1, base+1):
         clauses+=1
 
 # ext rule 4
-dimacs_output += 'c Each number appears at least once in each box'
+dimacs_output += 'c Each number appears at least once in each box\n'
 base_sqrt = int(math.sqrt(base))
 for roff in range(0, base_sqrt-1):
     for coff in range(0, base_sqrt-1):
