@@ -124,6 +124,40 @@ for k in range(1, size + 1):
                                     to_base(sq*a+w, sq*b+t, k, size))
                             clauses += 1
 
+# ext rule 1
+for x in range(1, base+1):
+    for y in range(1, base+1):
+        for z in range(1, base):
+            for i in range(z+1, base+1):
+                dimacs_output += '{0} {1} 0\n'.format(-to_base(x,y,z,base), -to_base(x,y,i, base))
+                clauses+=1
+
+# ext rule 2
+for y in range(1, base+1):
+    for z in range(1, base+1):
+        for x in range(1, base+1):
+            dimacs_output += str(to_base(x,y,z, base)) + ' '
+        dimacs_output += '0\n'
+        clauses += 1
+
+# ext rule 3
+for x in range(1, base+1):
+    for z in range(1, base+1):
+        for y in range(1, base+1):
+            dimacs_output += str(to_base(x,y,z, base)) + ' '
+        dimacs_output += '0\n'
+        clauses+=1
+
+# ext rule 4
+base_sqrt = int(math.sqrt(base))
+for roff in range(0, base_sqrt-1):
+    for coff in range(0, base_sqrt-1):
+        for k in range(1, base+1):
+            for i in range(1, base_sqrt+1):
+                for j in range(1, base_sqrt+1):
+                    dimacs_output += '{0} '.format(to_base(base_sqrt*roff + i, base_sqrt*coff + j, k, base))
+            dimacs_output += '0\n'
+            clauses += 1
 
 dimacs_output = "p cnf {0} {1}\n".format(variables, clauses) + dimacs_output
 
