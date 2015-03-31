@@ -1,0 +1,49 @@
+Try with a blank board and a difficult sudoku.
+What if the problem is unsatisfied?
+The extended encoding is better for more difficult puzzles?
+
+Introduction:
+In this paper we will explore solving sudoku as a SAT problem. Using the encodings described by Ines Lynce and Joel Ouaknine, we
+created a program which takes an unsolved sudoku puzzle, encodes it in standard SAT-challenge (DIMACS) format, inputs this
+encoding into the miniSAT-solver, and finally, converts the output of the solver into a solved puzzle. Lynce and Ouaknine
+identify a minimal encoding and an extended encoding in their paper, both of which are included in our program. Our program also
+allows any n by n puzzle as its input. The value of n does have to be a perfect square, but it does not have to be 9.
+This paper will state and discuss the results of testing the speed of using the minimal encoding versus using the extended 
+encoding. It will also discuss how our program was generalized to take any size puzzle and if changing the size significantly
+changes the program run time.
+
+Methods?
+
+Results:
+
+Test 0: Minimal on a puzzle that is solvable and then one that is not
+
+Test 1: Minimal vs. Extended on random puzzle
+
+Test 2: Minimal vs. Extended on difficult puzzle
+
+Test 3: Minimal vs. Extended on easy puzzle(s?)
+
+Test 3.5: Minimal vs. Extended on unsolvable puzzle?
+
+Test 4: 4x4 puzzle on minimal and extended
+
+Test 5: Sum times from multiple 3x3 puzzles and then multiple 4x4 puzzles and compare averages.
+
+ - Which was slower - the minimal or extended encoding? Did the input puzzle make a difference in which was faster?
+ - Are we able to solve n by n puzzles? Is solving 4x4 puzzle significantly slower than solving 3x3 puzzles?
+
+Discussion:
+It seems like the minimal encoding should always be faster; however, the extended encoding is more efficient for difficult
+puzzles. (?)
+
+ - Benefits of minimal: Fewer rules to check
+ - Benefits of extended: In certain cases the extended encoding is better?
+ - Why do we think <minimal or extended> was faster?
+ - Does n always have to be a perfect square?
+
+Conclusion:
+After testing our sudoku solver on a variety of input puzzles, it was found that...
+Our program can solve nxn puzzles, but (for this program) n must be a perfect square.
+...
+ 
