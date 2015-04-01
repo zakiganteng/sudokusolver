@@ -14,13 +14,7 @@
 #
 # -------------------------------------------------------------------
 
-# Yes, I am aware that this file is ugly, but it is closer to working than we
-# were before...
-# Doesn't check the within the box -- rule 5
-# Resulting board is transposed. we need to flip it back
-# Shayla and I were running into this a little before
-
-from print_functions import print_board, convert_board, output_board
+from print_functions import print_board, convert_board, output_board, base10toN
 from math import sqrt
 from xmath import to_base, from_base, to_index
 from subprocess import call
@@ -37,8 +31,6 @@ args = parser.parse_args()
 # print(args.inputfile.read())
 
 board = convert_board(args.inputfile.read())
-print ("Input board: ")
-print_board(board)
 
 
 # -----------------------------------------
@@ -56,9 +48,6 @@ variables = size * size * numbers
 dimacs_output = ""
 clauses = 0
 
-print ("Variables: ", variables)
-
-
 print ("Board requirements: ")
 dimacs_output += "c the board requirements\n"
 
@@ -66,17 +55,15 @@ for j in range(0, size):
     for i in range(0, size):
         value = int(board[to_index(i, j, size)])
         if value != 0:
-            print (value)
             value = to_base(i + 1, j + 1, value, size)
             clauses += 1
             dimacs_output += "{0} 0\n".format(value)
 
 
-
 dimacs_output += "c at least one number per entry\n"
 for i in range(1, size + 1):
-    for j in range (1, size + 1):
-        for k in range ( 1, numbers + 1):
+    for j in range(1, size + 1):
+        for k in range(1, numbers + 1):
             dimacs_output += "{0} ".format(to_base(i, j, k, size))
         dimacs_output += "0\n"
         clauses += 1
@@ -183,8 +170,6 @@ call([args.minisatexe, args.tmp_out.name, args.tmp_in])
 with open(args.tmp_in, "r") as f_in:
     solved_board = f_in.read()
 
-print ("Solved board:")
-
 # -----------------------------------------
 # CONVERT SOLVED BOARD
 # -----------------------------------------
@@ -197,7 +182,6 @@ if (solved_board[0] != "SAT"):
 # Remove "SAT"
 solved_board.pop(0)
 
-
 # convert to string
 sb = ""
 for s in solved_board:
@@ -205,7 +189,7 @@ for s in solved_board:
         l = int(s)
         if l > 0:
             (i, j, k) = from_base(l, size)
-            sb += str(k)
+            sb += base10toN(k, 36)
     except:
         pass
 
@@ -214,8 +198,4 @@ fixed = ""
 for i in range(0, size):
     for j in range(0, size):
         fixed += sb[to_index(i, j, size)]
-print (output_board(fixed))
 args.outputfile.write(output_board(fixed))
-
-
-

@@ -13,7 +13,7 @@
 #
 # -------------------------------------------------------------------
 
-from print_functions import print_board, convert_board, output_board
+from print_functions import print_board, convert_board, output_board, base10toN
 from math import sqrt
 from xmath import to_base, from_base, to_index
 from subprocess import call
@@ -43,6 +43,8 @@ print_board(board)
 # here
 size = int(sqrt(len(board)))
 numbers = size
+
+print ("Size of board:", size)
 
 # The number of individual possibilities
 variables = size * size * numbers
@@ -80,7 +82,7 @@ for i in range(1, size + 1):
         for k in range(1, numbers + 1):
             for j_s in range(j + 1, numbers + 1):
                 dimacs_output += "-{0} -{1} 0\n".format(
-                        to_base(i, j, k, size), to_base(i, j_s, k, size))
+                    to_base(i, j, k, size), to_base(i, j_s, k, size))
                 clauses += 1
 
 dimacs_output += "c Column constraint\n"
@@ -138,6 +140,7 @@ with open(args.tmp_in, "r") as f_in:
     solved_board = f_in.read()
 
 print ("Solved board:")
+print (solved_board)
 
 # -----------------------------------------
 # CONVERT SOLVED BOARD
@@ -151,7 +154,6 @@ if (solved_board[0] != "SAT"):
 # Remove "SAT"
 solved_board.pop(0)
 
-
 # convert to string
 sb = ""
 for s in solved_board:
@@ -159,7 +161,7 @@ for s in solved_board:
         l = int(s)
         if l > 0:
             (i, j, k) = from_base(l, size)
-            sb += str(k)
+            sb += base10toN(k, 36)
     except:
         pass
 
@@ -168,8 +170,4 @@ fixed = ""
 for i in range(0, size):
     for j in range(0, size):
         fixed += sb[to_index(i, j, size)]
-print (output_board(fixed))
 args.outputfile.write(output_board(fixed))
-
-
-
