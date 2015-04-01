@@ -26,6 +26,8 @@ def print_board(b):
             print(b[to_index(x, y, width)], end=" ")
 
 def output_board(b):
+    for v in b:
+        print (v)
     width = int(sqrt(len(b)))
     height = width
     ret_str = ""
