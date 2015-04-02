@@ -28,10 +28,13 @@ SAT solver}
             urlcolor=blue,citecolor=red}
 
 \usepackage[nospace]{cite}
+\usepackage{xspace}
 
 
 % Fix any bad-hyphenations here
 \hyphenation{}
+
+\input{macros.tex}
 
 \begin{document}
 
@@ -84,9 +87,55 @@ positions filled in, adding more potentially ambiguous cases. On a 9x9 board,
 an ``easy'' board may have more than 50\% of the squares filled in, whereas a
 ``Lex Luthor'' board may have as few as 4 squares filled in.
 
+\section{Methodologies}
+We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz.
 
+\section{Results}
+
+\evan{Reformat this sucker}
+\subsection{Test 0}
+Minimal encoding on a puzzle that is solvable:
+(25x25 Lex Luther but solvable):
+Clauses  :413382
+Variables: 15625
+
+Parse time 0.08s
+restarts              : 13
+conflicts             : 1987           (13863 /sec)
+decisions             : 25785          (0.00 \% random) (179896 /sec)
+propagations          : 249614         (1741497 /sec)
+conflict literals     : 157229         (0.93 \% deleted)
+Memory used           : 38.00 MB
+CPU time              : 0.143333 s
+
+(25x25 Not solvable):
+Parse Time:		: 0.05
+Clauses		      : 1474 
+Variables	      : 15625
+restarts              : 0
+conflicts             : 0              (0 /sec)
+decisions             : 0              (-nan \% random) (0 /sec)
+propagations          : 104            (1950 /sec)
+conflict literals     : 0              (-nan \% deleted)
+Memory used           : 20.00 MB
+CPU time              : 0.053333 s
+
+\subsection{Test 1}
+Minimal Encoding versus extended encoding on random puzzles:
+wat?
+
+
+
+
+
+
+
+
+\subsection{Limitations}
+Can't do 4x4 puzzles
 
 \section{Conclusion}
+
 
 
 \end{document}
