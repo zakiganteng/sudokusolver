@@ -14,7 +14,7 @@
 #
 # -------------------------------------------------------------------
 
-from print_functions import print_board, convert_board, output_board, base10toN
+from print_functions import convert_board, output_board, base10toN
 from math import sqrt
 from xmath import to_base, from_base, to_index
 from subprocess import call
@@ -26,12 +26,9 @@ parser.add_argument('outputfile', type=argparse.FileType('w'))
 parser.add_argument('minisatexe')
 parser.add_argument('tmp_out', type=argparse.FileType('w'))
 parser.add_argument('tmp_in')
-
 args = parser.parse_args()
-# print(args.inputfile.read())
 
 board = convert_board(args.inputfile.read())
-
 
 # -----------------------------------------
 # CONVERT TO DIMACS
@@ -48,9 +45,9 @@ variables = size * size * numbers
 dimacs_output = ""
 clauses = 0
 
-print ("Board requirements: ")
-dimacs_output += "c the board requirements\n"
+print ("Generating Board Requirements...")
 
+dimacs_output += "c the board requirements\n"
 for j in range(0, size):
     for i in range(0, size):
         value = int(board[to_index(i, j, size)])
@@ -58,7 +55,6 @@ for j in range(0, size):
             value = to_base(i + 1, j + 1, value, size)
             clauses += 1
             dimacs_output += "{0} 0\n".format(value)
-
 
 dimacs_output += "c at least one number per entry\n"
 for i in range(1, size + 1):
@@ -74,7 +70,7 @@ for i in range(1, size + 1):
         for k in range(1, numbers + 1):
             for j_s in range(j + 1, numbers + 1):
                 dimacs_output += "-{0} -{1} 0\n".format(
-                        to_base(i, j, k, size), to_base(i, j_s, k, size))
+                    to_base(i, j, k, size), to_base(i, j_s, k, size))
                 clauses += 1
 
 dimacs_output += "c Column constraint\n"
@@ -83,11 +79,11 @@ for i in range(1, size + 1):
         for k in range(1, numbers + 1):
             for i_s in range(i + 1, numbers + 1):
                 dimacs_output += "-{0} -{1} 0\n".format(to_base(i, j, k, size),
-                        to_base(i_s, j, k, size))
+                                                        to_base(i_s, j, k, size)
+                                                        )
                 clauses += 1
 
 dimacs_output += "c 3x3 block constrain\n"
-
 sq = int(sqrt(size))
 for k in range(1, size + 1):
     for a in range(sq):
@@ -96,8 +92,8 @@ for k in range(1, size + 1):
                 for v in range(1, sq):
                     for w in range(v + 1, sq + 1):
                         dimacs_output += "-{0} -{1} 0\n".format(
-                                to_base(sq*a + u, sq*b + v, k, size),
-                                to_base(sq*a + u, sq*b + w, k, size))
+                            to_base(sq*a + u, sq*b + v, k, size),
+                            to_base(sq*a + u, sq*b + w, k, size))
                         clauses += 1
 for k in range(1, size + 1):
     for a in range(sq):
@@ -107,8 +103,8 @@ for k in range(1, size + 1):
                     for w in range(u + 1, sq+1):
                         for t in range(1, sq+1):
                             dimacs_output += "-{0} -{1} 0\n".format(
-                                    to_base(sq*a+u, sq*b+v, k, size),
-                                    to_base(sq*a+w, sq*b+t, k, size))
+                                to_base(sq*a+u, sq*b+v, k, size),
+                                to_base(sq*a+w, sq*b+t, k, size))
                             clauses += 1
 
 # ext rule 1
@@ -117,16 +113,16 @@ for x in range(1, size+1):
     for y in range(1, size+1):
         for z in range(1, numbers):
             for i in range(z+1, size+1):
-                dimacs_output += '{0} {1} 0\n'.format(-to_base(x,y,z,size),
-                        -to_base(x,y,i, size))
-                clauses+=1
+                dimacs_output += '{0} {1} 0\n'.format(-to_base(x, y, z, size),
+                                                      -to_base(x, y, i, size))
+                clauses += 1
 
 # ext rule 2
 dimacs_output += 'c Each number appears at least once in each row\n'
 for y in range(1, size+1):
     for z in range(1, size+1):
         for x in range(1, size+1):
-            dimacs_output += str(to_base(x,y,z, size)) + ' '
+            dimacs_output += str(to_base(x, y, z, size)) + ' '
         dimacs_output += '0\n'
         clauses += 1
 
@@ -135,9 +131,9 @@ dimacs_output += 'c Each number appears at least once in each column\n'
 for x in range(1, size+1):
     for z in range(1, size+1):
         for y in range(1, size+1):
-            dimacs_output += str(to_base(x,y,z, size)) + ' '
+            dimacs_output += str(to_base(x, y, z, size)) + ' '
         dimacs_output += '0\n'
-        clauses+=1
+        clauses += 1
 
 # ext rule 4
 dimacs_output += 'c Each number appears at least once in each box\n'
@@ -147,7 +143,8 @@ for roff in range(0, sq):
             for i in range(1, sq+1):
                 for j in range(1, sq+1):
                     dimacs_output += '{0} '.format(to_base(sq*roff + i,
-                        sq*coff + j, k, size))
+                                                           sq * coff + j, k,
+                                                           size))
             dimacs_output += '0\n'
             clauses += 1
 
@@ -160,8 +157,12 @@ args.tmp_out.write(dimacs_output)
 # -----------------------------------------
 # Run minisat
 # -----------------------------------------
-print ("Running Minisat")
-call([args.minisatexe, args.tmp_out.name, args.tmp_in])
+print ("Running SAT solver")
+try:
+    call([args.minisatexe, args.tmp_out.name, args.tmp_in])
+except OSError:
+    print ("Fatal Error: Could not run", args.minisatexe)
+    exit(1)
 
 # -----------------------------------------
 # Load solved board
@@ -178,7 +179,7 @@ with open(args.tmp_in, "r") as f_in:
 solved_board = solved_board.split()
 if (solved_board[0] != "SAT"):
     print ("Unsolvable puzzle")
-    exit(1)
+    exit(0)
 # Remove "SAT"
 solved_board.pop(0)
 

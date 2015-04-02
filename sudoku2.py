@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 # -------------------------------------------------------------------
 # sudoku2.py
 #
@@ -13,7 +14,7 @@
 #
 # -------------------------------------------------------------------
 
-from print_functions import print_board, convert_board, output_board, base10toN
+from print_functions import convert_board, output_board, base10toN
 from math import sqrt
 from xmath import to_base, from_base, to_index
 from subprocess import call
@@ -25,14 +26,9 @@ parser.add_argument('outputfile', type=argparse.FileType('w'))
 parser.add_argument('minisatexe')
 parser.add_argument('tmp_out', type=argparse.FileType('w'))
 parser.add_argument('tmp_in')
-
 args = parser.parse_args()
-# print(args.inputfile.read())
 
 board = convert_board(args.inputfile.read())
-print ("Input board: ")
-print_board(board)
-
 
 # -----------------------------------------
 # CONVERT TO DIMACS
@@ -44,34 +40,26 @@ print_board(board)
 size = int(sqrt(len(board)))
 numbers = size
 
-print ("Size of board:", size)
-
 # The number of individual possibilities
 variables = size * size * numbers
 dimacs_output = ""
 clauses = 0
 
-print ("Variables: ", variables)
+print ("Generating Board Requirements...")
 
-
-print ("Board requirements: ")
 dimacs_output += "c the board requirements\n"
-
 for j in range(0, size):
     for i in range(0, size):
         value = int(board[to_index(i, j, size)])
         if value != 0:
-            print (value)
             value = to_base(i + 1, j + 1, value, size)
             clauses += 1
             dimacs_output += "{0} 0\n".format(value)
 
-
-
 dimacs_output += "c at least one number per entry\n"
 for i in range(1, size + 1):
-    for j in range (1, size + 1):
-        for k in range ( 1, numbers + 1):
+    for j in range(1, size + 1):
+        for k in range(1, numbers + 1):
             dimacs_output += "{0} ".format(to_base(i, j, k, size))
         dimacs_output += "0\n"
         clauses += 1
@@ -91,7 +79,8 @@ for i in range(1, size + 1):
         for k in range(1, numbers + 1):
             for i_s in range(i + 1, numbers + 1):
                 dimacs_output += "-{0} -{1} 0\n".format(to_base(i, j, k, size),
-                        to_base(i_s, j, k, size))
+                                                        to_base(i_s, j, k, size)
+                                                        )
                 clauses += 1
 
 dimacs_output += "c 3x3 block constrain\n"
@@ -104,8 +93,8 @@ for k in range(1, size + 1):
                 for v in range(1, sq):
                     for w in range(v + 1, sq + 1):
                         dimacs_output += "-{0} -{1} 0\n".format(
-                                to_base(sq*a + u, sq*b + v, k, size),
-                                to_base(sq*a + u, sq*b + w, k, size))
+                            to_base(sq*a + u, sq*b + v, k, size),
+                            to_base(sq*a + u, sq*b + w, k, size))
                         clauses += 1
 for k in range(1, size + 1):
     for a in range(sq):
@@ -115,8 +104,8 @@ for k in range(1, size + 1):
                     for w in range(u + 1, sq+1):
                         for t in range(1, sq+1):
                             dimacs_output += "-{0} -{1} 0\n".format(
-                                    to_base(sq*a+u, sq*b+v, k, size),
-                                    to_base(sq*a+w, sq*b+t, k, size))
+                                to_base(sq*a+u, sq*b+v, k, size),
+                                to_base(sq*a+w, sq*b+t, k, size))
                             clauses += 1
 
 
@@ -125,12 +114,17 @@ dimacs_output = "p cnf {0} {1}\n".format(variables, clauses) + dimacs_output
 # Write to file
 args.tmp_out.write(dimacs_output)
 
+print ("Board Requirements Generated")
 
 # -----------------------------------------
 # Run minisat
 # -----------------------------------------
-print ("Running Minisat")
-call([args.minisatexe, args.tmp_out.name, args.tmp_in])
+print ("Running SAT solver")
+try:
+    call([args.minisatexe, args.tmp_out.name, args.tmp_in])
+except OSError:
+    print ("Fatal Error: Could not run", args.minisatexe)
+    exit(1)
 
 # -----------------------------------------
 # Load solved board
@@ -138,9 +132,6 @@ call([args.minisatexe, args.tmp_out.name, args.tmp_in])
 
 with open(args.tmp_in, "r") as f_in:
     solved_board = f_in.read()
-
-print ("Solved board:")
-print (solved_board)
 
 # -----------------------------------------
 # CONVERT SOLVED BOARD
@@ -150,7 +141,7 @@ print (solved_board)
 solved_board = solved_board.split()
 if (solved_board[0] != "SAT"):
     print ("Unsolvable puzzle")
-    exit(1)
+    exit(0)
 # Remove "SAT"
 solved_board.pop(0)
 
