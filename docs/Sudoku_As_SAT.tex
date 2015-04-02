@@ -1,0 +1,92 @@
+% vim: set fenc=utf-8 ft=latex encoding=utf-8
+% -*- mode: latex; coding: UTF-8; -*-
+\documentclass[conference,final]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+
+\newcommand{\TheTitle}{Investigating the Effects of Extended Encoding Against
+Minimal Encoding}
+\newcommand{\TheKeywords}{Sudoku, SAT-solver, minimal encoding, extended encoding}
+\newcommand{\TheAuthors}{Evan Wilde, Sebastien Guillemot, Shayla Redlin, Laura
+Grondahl}
+\newcommand{\TheSubject}{Solving sudoku of varying size and difficulty with a
+SAT solver}
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage[unicode=true,
+            bookmarks=false,breaklinks=false,pdfborder={0 0 0},
+            backref=none,colorlinks=false]{hyperref}
+
+
+
+\hypersetup{pdftitle={\TheTitle},
+            pdfauthor={\TheAuthors},
+            pdfkeywords={\TheKeywords},
+            pdfsubject={\TheSubject},
+            urlcolor=blue,citecolor=red}
+
+\usepackage[nospace]{cite}
+
+
+% Fix any bad-hyphenations here
+\hyphenation{}
+
+\begin{document}
+
+\title{\TheTitle}
+
+\author{
+\IEEEauthorblockA{\TheAuthors}
+\IEEEauthorblockN{Department of Computer Science,
+                    University of Victoria,
+	    Canada.}}
+\maketitle
+\begin{abstract}
+In this paper we explore solving sudoku as a SAT problem. Using encoding
+methods described by Ines Lynce and Joel Ouaknine, we wrote a program to take
+an unsolved sudoku puzzle, encode it in standard SAT-challenge (DIMACS) format,
+run the SAT solver, and finally convert the results back to a sudoku board.
+Lynce and Ouaknine identify a minimal encoding and an extended encoding in
+their paper. We implemented both encodings in separate programs. The program is
+capable of running on NxN puzzles where N is a perfect square. e.g 9x9, 16x6,
+and 25x25 are all usable board sizes. Due to base conversions, our program is
+only capable of going up to board sizes of 36x36. The paper presents the
+runtime of the minimal encoding versus the extended encoding in the program
+``minisat''. We also present the method by which our program was generalized to
+handle puzzles of varying sizes, and how varying the size changes the runtime.
+\end{abstract}
+\begin{IEEEkeywords}
+\TheKeywords
+\end{IEEEkeywords}
+
+\section{Introduction}
+In this paper we explore solving sudoku as a SAT problem. Using encoding
+methods described by Ines Lynce and Joel Ouaknine, we wrote a program to take
+an unsolved sudoku puzzle, encode it in standard SAT-challenge (DIMACS) format,
+run the SAT solver, and finally convert the results back to a sudoku board.
+Lynce and Ouaknine identify a minimal encoding and an extended encoding in
+their paper. We implemented both encodings in separate programs. The program is
+capable of running on NxN puzzles where N is a perfect square. e.g 9x9, 16x6,
+and 25x25 are all usable board sizes. Due to base conversions, our program is
+only capable of going up to board sizes of 36x36. The paper presents the
+runtime of the minimal encoding versus the extended encoding in the program
+``minisat''. We also present the method by which our program was generalized to
+handle puzzles of varying sizes, and how varying the size changes the runtime.
+
+\section{Data sample}
+We found an online board
+generator\footnote{\url{http://sudoku-puzzles.merschat.com/}} with difficulties
+ranging from ``easy'' to ``Lex Luthor''. Easier puzzles have many blocks
+originally filled in, whereas puzzles at Lex Luthor difficulty only have a few
+positions filled in, adding more potentially ambiguous cases. On a 9x9 board,
+an ``easy'' board may have more than 50\% of the squares filled in, whereas a
+``Lex Luthor'' board may have as few as 4 squares filled in.
+
+
+
+\section{Conclusion}
+
+
+\end{document}
