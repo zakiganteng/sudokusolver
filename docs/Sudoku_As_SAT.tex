@@ -108,6 +108,7 @@ conflict literals     : 157229         (0.93 \% deleted)
 Memory used           : 38.00 MB
 CPU time              : 0.143333 s
 
+Minimal encoding on a puzzle that is not solvable:
 (25x25 Not solvable):
 Parse Time:		: 0.05
 Clauses		      : 1474 
@@ -121,21 +122,42 @@ Memory used           : 20.00 MB
 CPU time              : 0.053333 s
 
 \subsection{Test 1}
-Minimal Encoding versus extended encoding on random puzzles:
-wat?
+Minimal encoding versus extended encoding on a medium puzzle:
+
+\subsection{Test 2}
+Minimal encoding versus extended encoding on a difficult puzzle:
 
 
+\subsection{Test 3}
+Minimal encoding versus extended encoding on an easy puzzle:
 
+\subsection{Test 4}
+Minimal encoding versus extended encoding on an unsolvable puzzle:
 
+\subsection{Test 5}
+Minimal versus extended encoding on a 16x16 puzzle:
 
+\subsection{Test 6}
+Sum times from 4 different puzzles solved with the minimal encoding and compute the average.
 
 
 
 \subsection{Limitations}
 Can't do 4x4 puzzles
 
-\section{Conclusion}
+\section{Discussion}
+From tests 1, 2, 3, 4, and 5 it was found that...
+It seems like the minimal encoding should always be faster; however, the extended encoding is more efficient for difficult
+puzzles. \(?\)
+Theorectically, our program can take any nxn puzzle as long as n is a perfect square; however, due to the limitations 
+of encoding numbers larger than 10 in one character, our program can only take puzzles up to 36x36. One possible way to
+encode nxn puzzles with n larger than 36 is to have whitespace between each entry in the input file and have the
+program reading the input look for whitespace to determine individual entries.
 
+\section{Conclusion}
+After testing our sudoku solver on a variety of input puzzles, it was found that...
+Our program can solve nxn puzzles up to $n=36$, but n must be a perfect square.
+...
 
 
 \end{document}
