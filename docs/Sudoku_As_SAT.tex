@@ -126,6 +126,60 @@ with 4Gb of RAM.
 
 \section{Results}
 
+\subsection{Test 1: Minimal encoding on 9x9 puzzles of ``easy'', ``medium'',
+and ``Lex Luthor'' difficulty levels.}
+
+\begin{table}[htb]
+	\centering
+	\caption{9x9 Parse Information}
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy & 1895 & 729 & 0.00 \\
+		Medium & 1926 & 729 & 0.00 \\
+		Lex Luthor & 7246 & 729 & 0.00
+	\end{tabular}
+\end{table}
+
+\begin{table}[htb]
+	\centering
+	\caption{9x9 Processing Information}
+	\begin{tabular}{c | l l l l l}
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy & 19.00 & 0 & 1 & 0 & 729\\
+		Medium & 19.00 & 0 & 5 & 0 & 729\\
+		Lex Luthor & 19.00 & 0.003333 & 95 & 4 & 851
+	\end{tabular}
+	For all difficulties, the number of restarts was 1.
+\end{table}
+
+\subsection{Test 2: Minimal encoding on unsolvable 9x9 puzzles of ``easy'',
+``medium'' and ``Lex Luthor'' difficult levels.}
+
+\begin{table}[htb]
+	\centering
+	\caption{9x9 Parse Information}
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy & 1863 & 729 & 0.00 \\
+		Medium & 1813 & 729 & 0.00 \\
+		Lex Luthor & 6864 & 729 & 0.00
+	\end{tabular}
+\end{table}
+
+\begin{table}[htb]
+	\centering
+	\caption{9x9 Processing Information}
+	\begin{tabular}{c | l l l l l }
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy & 19.00 & 0.003333 & 0 & 0 & 646 \\
+		Medium & 19.00 & 0.003333 & 0 & 0 & 512 \\
+		Lex Luthor & 19.00 & 0 & 86 & 53 & 2518
+	\end{tabular}
+	For all difficulties, the number of restarts was 1.
+\end{table}
+
 \evantodo{Reformat this sucker}
 \subsection{Test 0}
 
