@@ -36,8 +36,15 @@ SAT solver}
             urlcolor=blue,citecolor=red}
 
 \usepackage[nospace]{cite}
-\usepackage{xspace}
 
+% Table support
+\usepackage{dcolumn}
+\usepackage{longtable}
+\usepackage{balance}
+
+% Extra suppport
+\usepackage{xspace}
+\usepackage{caption}
 
 % Fix any bad-hyphenations here
 \hyphenation{}
@@ -125,94 +132,98 @@ We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz
 with 4Gb of RAM.
 
 \section{Results}
+This is where we describe our findings.\evantodo{Come up with a better
+description for the section}
 
 \subsection{Test 1: Minimal encoding on 9x9 puzzles of ``easy'', ``medium'',
 and ``Lex Luthor'' difficulty levels.}
 
-\begin{table}[htb]
+\begin{table}[htbp]
 	\centering
-	\caption{9x9 Parse Information}
 	\begin{tabular}{c | l l l}
 		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy & 1895 & 729 & 0.00 \\
-		Medium & 1926 & 729 & 0.00 \\
-		Lex Luthor & 7246 & 729 & 0.00
+		Easy 		& 1895 & 729 & 0.00 \\
+		Medium 		& 1926 & 729 & 0.00 \\
+		Lex Luthor 	& 7246 & 729 & 0.00
 	\end{tabular}
+	\caption{Minimal 9x9 Parse Information}
+	\label{tab:summary}
 \end{table}
 
-\begin{table}[htb]
+\begin{table}[!h]
 	\centering
-	\caption{9x9 Processing Information}
-	\begin{tabular}{c | l l l l l}
+	\begin{tabular}{c | l l p{20pt} p{20pt} l}
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
-		Easy & 19.00 & 0 & 1 & 0 & 729\\
-		Medium & 19.00 & 0 & 5 & 0 & 729\\
-		Lex Luthor & 19.00 & 0.003333 & 95 & 4 & 851
+		Easy 		& 19.00 & 0 		& 1  & 0 & 729\\
+		Medium 		& 19.00 & 0 		& 5  & 0 & 729\\
+		Lex Luthor 	& 19.00 & 0.003333 	& 95 & 4 & 851
 	\end{tabular}
+	\caption{Minimal 9x9 Processing Information}
+
+	\label{tab:summary}
 	For all difficulties, the number of restarts was 1.
 \end{table}
 
 \subsection{Test 2: Minimal encoding on unsolvable 9x9 puzzles of ``easy'',
 ``medium'' and ``Lex Luthor'' difficult levels.}
 
-\begin{table}[htb]
+\begin{table}[!h]
 	\centering
-	\caption{9x9 Parse Information}
 	\begin{tabular}{c | l l l}
 		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy & 1863 & 729 & 0.00 \\
-		Medium & 1813 & 729 & 0.00 \\
-		Lex Luthor & 6864 & 729 & 0.00
+		Easy 		& 1863 & 729 & 0.00 \\
+		Medium 		& 1813 & 729 & 0.00 \\
+		Lex Luthor 	& 6864 & 729 & 0.00
 	\end{tabular}
+	\caption{Unsolvable Minimal 9x9 Parse Information}
+
+	\label{tab:summary}
 \end{table}
 
-\begin{table}[htb]
+\begin{table}[!h]
 	\centering
-	\caption{9x9 Processing Information}
-	\begin{tabular}{c | l l l l l }
+	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
-		Easy & 19.00 & 0.003333 & 0 & 0 & 646 \\
-		Medium & 19.00 & 0.003333 & 0 & 0 & 512 \\
-		Lex Luthor & 19.00 & 0 & 86 & 53 & 2518
+		Easy 		& 19.00 & 0.003333 & 0  & 0  & 646 \\
+		Medium 		& 19.00 & 0.003333 & 0  & 0  & 512 \\
+		Lex Luthor 	& 19.00 & 0 	   & 86 & 53 & 2518
 	\end{tabular}
+	\caption{Unsolvable Minimal 9x9 Processing Information}
+
+	\label{tab:summary}
 	For all difficulties, the number of restarts was 1.
+
 \end{table}
 
-\evantodo{Reformat this sucker}
-\subsection{Test 0}
+\subsection{Test 3: Extended encoding on 9x9 puzzles of ``easy'', ``medium'',
+and ``Lex Luthor'' difficulty levels.}
+\begin{table}[htbp]
+	\centering
+	\caption{Extended 9x9 Parse Information}
+	\label{tab:summary}
+\end{table}
 
-% \begin{tabular}{l l l l}
-% 	25x25 Lex Luther
+\begin{table}[htbp]
+	\centering
+	\caption{Extended 9x9 Processing Information}
+\end{table}
+
+\subsection{Test 4: Extended encoding on unsolvable 9x9 puzzles of ``easy'',
+``medium'' and ``Lex Luthor'' difficult levels.}
+
+\begin{table}[!h]
+	\centering
+	\caption{Unsolvable Extended 9x9 Parse Information}
+\end{table}
+
+\begin{table}[!h]
+	\centering
+	\caption{Unsolvable Extended 9x9 Processing Information}
+\end{table}
 
 
-Minimal encoding on a puzzle that is solvable:
-(25x25 Lex Luther but solvable):
-Clauses  :413382
-Variables: 15625
-
-Parse time 0.08s
-restarts              : 13
-conflicts             : 1987           (13863 /sec)
-decisions             : 25785          (0.00 \% random) (179896 /sec)
-propagations          : 249614         (1741497 /sec)
-conflict literals     : 157229         (0.93 \% deleted)
-Memory used           : 38.00 MB
-CPU time              : 0.143333 s
-
-Minimal encoding on a puzzle that is not solvable:
-(25x25 Not solvable):
-Parse Time:		: 0.05
-Clauses		      : 1474 
-Variables	      : 15625
-restarts              : 0
-conflicts             : 0              (0 /sec)
-decisions             : 0              (-nan \% random) (0 /sec)
-propagations          : 104            (1950 /sec)
-conflict literals     : 0              (-nan \% deleted)
-Memory used           : 20.00 MB
-CPU time              : 0.053333 s
 
 \subsection{Test 1}
 Minimal encoding versus extended encoding on a medium puzzle:
