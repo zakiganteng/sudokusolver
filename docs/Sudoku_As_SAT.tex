@@ -90,29 +90,39 @@ handle puzzles of varying sizes, and how varying the size changes the runtime.
 We found an online board
 generator\footnote{\url{http://sudoku-puzzles.merschat.com/}} with difficulties
 ranging from ``easy'' to ``Lex Luthor''. Easier puzzles have many blocks
-originally filled in, whereas puzzles at Lex Luthor difficulty only have a few
-positions filled in, adding more potentially ambiguous cases. On a 9x9 board,
-an ``easy'' board may have more than 50\% of the squares filled in, whereas a
-``Lex Luthor'' board may have as few as 4 squares filled in.
+originally filled in, whereas puzzles at ``Lex Luthor'' difficulty only have a
+few positions filled in, adding more potentially ambiguous cases. On a 9x9
+board, an ``easy'' board may have more than 50\% of the squares filled in,
+whereas a ``Lex Luthor'' board may have as few as 4 squares filled in, which
+leads to more ambiguous cases and potentially many solutions for a given
+puzzle.
 
 \section{Methodologies}
 To test the benefits and drawbacks of the presented minimal and extended
 encodings, we performed the following test to determine how each scales across
-the difficulty of the puzzle and the size of the puzzle.
-We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz.
-Our tests,
+the difficulty of the puzzle and the size of the puzzle. The puzzles we used
+for testing purposes are available in the GitHub
+repository\footnote{\url{https://github.com/etcwilde/sudokusolver}}.\\
+
+\evan{I don't particularly like how this introduction to the tests is worded}\\
+The tests we ran are;
 \begin{enumerate}
 	\item Minimal encoding on 9x9 puzzles of ``easy'', ``medium'', and
-		``lex luthor'' difficulty levels.
+		``Lex Luthor'' difficulty levels.
 	\item Minimal encoding on unsolvable 9x9 puzzles of ``easy'',
-		``medium'' and ``lex luthor'' difficult levels.
+		``medium'' and ``Lex Luthor'' difficult levels.
 	\item Extended encoding on 9x9 puzzles of ``easy'', ``medium'', and
-		``lex luthor'' difficulty levels.
+		``Lex Luthor'' difficulty levels.
 	\item Extended encoding on unsolvable 9x9 puzzles of ``easy'',
-		``medium'' and ``lex luthor'' difficult levels.
-
-	\item Minimal encoding versus extended encoding on 16x16 puzzles
+		``medium'' and ``Lex Luthor'' difficult levels.
+	\item Minimal encoding versus extended encoding on 16x16 puzzles of
+		``easy'', ``medium'', and ``Lex Luthor'' difficulty levels.
+	\item Minimal encoding versus extended encoding on 4 25x25 puzzles of
+		``Lex Luthor'' difficulty level.
 \end{enumerate}
+
+We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz
+with 4Gb of RAM.
 
 \section{Results}
 
