@@ -26,12 +26,12 @@ Test 3: Minimal vs. Extended on easy puzzle(s?)
 
 Test 3.5: Minimal vs. Extended on unsolvable puzzle?
 
-Test 4: 4x4 puzzle on minimal and extended
+Test 4: 16x16 puzzle on minimal and extended
 
-Test 5: Sum times from multiple 3x3 puzzles and then multiple 4x4 puzzles and compare averages.
+Test 5: Sum times from multiple 9x9 puzzles and then multiple 16x16 puzzles and compare averages.
 
  - Which was slower - the minimal or extended encoding? Did the input puzzle make a difference in which was faster?
- - Are we able to solve n by n puzzles? Is solving 4x4 puzzle significantly slower than solving 3x3 puzzles?
+ - Are we able to solve n by n puzzles? Is solving 16x16 puzzle significantly slower than solving 9x9 puzzles?
 
 Discussion:
 It seems like the minimal encoding should always be faster; however, the extended encoding is more efficient for difficult
@@ -41,6 +41,11 @@ puzzles. (?)
  - Benefits of extended: In certain cases the extended encoding is better?
  - Why do we think <minimal or extended> was faster?
  - Does n always have to be a perfect square?
+ 
+Theorectically, our program can take any nxn puzzle as long as n is a perfect square; however, due to the limitations 
+of encoding numbers larger than 10 in one character, our program can only take puzzles up to 36x36. One way to
+encode nxn puzzles with n larger than 36 is to have whitespace between each entry in the input file and have the
+program reading the input look for whitespace to determine individual entries.
 
 Conclusion:
 After testing our sudoku solver on a variety of input puzzles, it was found that...
