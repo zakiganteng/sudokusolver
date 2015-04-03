@@ -1,6 +1,16 @@
 % vim: set fenc=utf-8 ft=latex encoding=utf-8
 % -*- mode: latex; coding: UTF-8; -*-
-\documentclass[conference,final]{IEEEtran}
+
+\newif\ifdraft
+\drafttrue % Draft mode -- comment this out before submission
+
+\ifdraft
+  \documentclass[conference,draftclsnofoot]{IEEEtran}
+  \def\baselinestretch{1}
+  \setlength{\marginparwidth}{2cm}
+\else
+  \documentclass[conference,final]{IEEEtran}
+\fi
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -18,8 +28,6 @@ SAT solver}
 \usepackage[unicode=true,
             bookmarks=false,breaklinks=false,pdfborder={0 0 0},
             backref=none,colorlinks=false]{hyperref}
-
-
 
 \hypersetup{pdftitle={\TheTitle},
             pdfauthor={\TheAuthors},
@@ -88,12 +96,33 @@ an ``easy'' board may have more than 50\% of the squares filled in, whereas a
 ``Lex Luthor'' board may have as few as 4 squares filled in.
 
 \section{Methodologies}
+To test the benefits and drawbacks of the presented minimal and extended
+encodings, we performed the following test to determine how each scales across
+the difficulty of the puzzle and the size of the puzzle.
 We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz.
+Our tests,
+\begin{enumerate}
+	\item Minimal encoding on 9x9 puzzles of ``easy'', ``medium'', and
+		``lex luthor'' difficulty levels.
+	\item Minimal encoding on unsolvable 9x9 puzzles of ``easy'',
+		``medium'' and ``lex luthor'' difficult levels.
+	\item Extended encoding on 9x9 puzzles of ``easy'', ``medium'', and
+		``lex luthor'' difficulty levels.
+	\item Extended encoding on unsolvable 9x9 puzzles of ``easy'',
+		``medium'' and ``lex luthor'' difficult levels.
+
+	\item Minimal encoding versus extended encoding on 16x16 puzzles
+\end{enumerate}
 
 \section{Results}
 
-\evan{Reformat this sucker}
+\evantodo{Reformat this sucker}
 \subsection{Test 0}
+
+% \begin{tabular}{l l l l}
+% 	25x25 Lex Luther
+
+
 Minimal encoding on a puzzle that is solvable:
 (25x25 Lex Luther but solvable):
 Clauses  :413382
@@ -138,26 +167,35 @@ Minimal encoding versus extended encoding on an unsolvable puzzle:
 Minimal versus extended encoding on a 16x16 puzzle:
 
 \subsection{Test 6}
-Sum times from 4 different puzzles solved with the minimal encoding and compute the average.
+Sum times from 4 different puzzles solved with the minimal encoding and compute
+the average.
 
 
 
 \subsection{Limitations}
-Can't do 4x4 puzzles
+Theoretically our program can use any $n$x$n$ puzzle, so long a $n$ is a
+perfect square; however, due to limitations of encoding numbers larger than z,
+our program can only take puzzles up to 36x36. A possible method of extending
+the usage of the solver is to allow a delimiter between values in each cell.
+
+
+Can't do 4x4 puzzles.
 
 \section{Discussion}
-From tests 1, 2, 3, 4, and 5 it was found that...
-It seems like the minimal encoding should always be faster; however, the extended encoding is more efficient for difficult
-puzzles. \(?\)
-Theorectically, our program can take any nxn puzzle as long as n is a perfect square; however, due to the limitations 
-of encoding numbers larger than 10 in one character, our program can only take puzzles up to 36x36. One possible way to
-encode nxn puzzles with n larger than 36 is to have whitespace between each entry in the input file and have the
-program reading the input look for whitespace to determine individual entries.
+From tests 1, 2, 3, 4, and 5 it was found that...  It seems like the minimal
+encoding should always be faster; however, the extended encoding is more
+efficient for difficult puzzles. \(?\)
+Theorectically, our program can take any nxn puzzle as long as n is a perfect
+square; however, due to the limitations of encoding numbers larger than 10 in
+one character, our program can only take puzzles up to 36x36. One possible way
+to encode nxn puzzles with n larger than 36 is to have whitespace between each
+entry in the input file and have the program reading the input look for
+whitespace to determine individual entries.
 
 \section{Conclusion}
-After testing our sudoku solver on a variety of input puzzles, it was found that...
-Our program can solve nxn puzzles up to $n=36$, but n must be a perfect square.
-...
+After testing our sudoku solver on a variety of input puzzles, it was found
+that...  Our program can solve nxn puzzles up to $n=36$, but n must be a
+perfect square.  ...
 
 
 \end{document}
