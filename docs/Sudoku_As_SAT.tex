@@ -6,11 +6,11 @@
 
 \ifdraft
   \documentclass[conference,draftclsnofoot]{IEEEtran}
-  \def\baselinestretch{1}
-  \setlength{\marginparwidth}{2cm}
 \else
   \documentclass[conference,final]{IEEEtran}
 \fi
+\def\baselinestretch{1}
+\setlength{\marginparwidth}{2cm}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -42,13 +42,15 @@ SAT solver}
 \usepackage{longtable}
 \usepackage{balance}
 \usepackage{placeins}
+\usepackage{multirow}
 
 % Extra suppport
 \usepackage{xspace}
 \usepackage{caption}
 
 % Fix any bad-hyphenations here
-\hyphenation{}
+\hyphenation{puzzles extended minimal encodings minisat SAT-solver levels
+difficulty}
 
 \input{macros.tex}
 
@@ -63,58 +65,49 @@ SAT solver}
 	    Canada.}}
 \maketitle
 \begin{abstract}
-In this paper we explore solving sudoku as a SAT problem. Using encoding
-methods described by Ines Lynce and Joel Ouaknine, we wrote a program to take
-an unsolved sudoku puzzle, encode it in standard SAT-challenge (DIMACS) format,
-run the SAT solver, and finally convert the results back to a sudoku board.
-Lynce and Ouaknine identify a minimal encoding and an extended encoding in
-their paper. We implemented both encodings in separate programs. The program is
-capable of running on $n \times n$ puzzles where $n$ is a perfect square. e.g
-$9\times 9$, $16\times 16$, and $25\times 25$ are all usable board sizes. Due
-to base conversions, our program is only capable of going up to board sizes of
-$36 \times 36$. The paper presents the runtime of the minimal encoding versus
-the extended encoding in the program ``minisat''. We also present the method by
-which our program was generalized to handle puzzles of varying sizes, and how
-varying the size changes the runtime.
-\end{abstract}
+ The Sudoku game was popular in Japan since the mid-80's, but in 2005 had an
+ explosion in western countries. The popular game can be encoded as a SAT
+ problem and given to a SAT solver to get a solution to the puzzle. Various
+ encodings of the Sudoku problem have been presented.	In this paper we
+ explore the scalability of extended encoding and minimal encoding of Sudoku as
+ SAT over puzzle difficulty levels and board sizes.
+ \end{abstract}
 \begin{IEEEkeywords}
 \TheKeywords
 \end{IEEEkeywords}
 
 \section{Introduction}
-In this paper we explore solving sudoku as a SAT problem. Using encoding
-methods described by Ines Lynce and Joel Ouaknine, we wrote a program to take
-an unsolved sudoku puzzle, encode it in standard SAT-challenge (DIMACS) format,
-run the SAT solver, and finally convert the results back to a sudoku board.
-Lynce and Ouaknine identify a minimal encoding and an extended encoding in
-their paper. We implemented both encodings in separate programs. The program is
-capable of running on $n \times n$ puzzles where $n$ is a perfect square. e.g
-$9\times 9$, $16\times 16$, and $25\times 25$ are all usable board sizes. Due
-to base conversions, our program is only capable of going up to board sizes of
-$36 \times 36$. The paper presents the runtime of the minimal encoding versus
-the extended encoding in the program ``minisat''. We also present the method by
-which our program was generalized to handle puzzles of varying sizes, and how
-varying the size changes the runtime.
+The game of Sudoku became popular in Japan in the mid-80's\cite{Lynce2006}, but
+in 2005 had an explosion in western countries. The popular game can be
+encoded as a SAT problem and given to a SAT solver to get a solution to the
+puzzle. Various encodings of the Sudoku problem have been presented.	In this
+paper we explore the scalability of extended encoding and minimal encoding of
+Sudoku as SAT over puzzle difficulty levels and board sizes. We ran the
+encodings using the ``minisat''\footnote{\url{http://minisat.se/MiniSat.html}}
+SAT solver to get our results. All of our results are available on a GitHub
+repository\footnote{\url{https://github.com/etcwilde/sudokusolver}}.
 
-\section{Data sample}
-We found an online board
-generator\footnote{\url{http://sudoku-puzzles.merschat.com/}} with difficulties
-ranging from ``easy'' to ``Lex Luthor''. Easier puzzles have many blocks
-originally filled in, whereas puzzles at ``Lex Luthor'' difficulty only have a
-few positions filled in, adding more potentially ambiguous cases. On a $9
-\times 9$ board, an ``easy'' board may have more than 50\% of the squares
-filled in, whereas a ``Lex Luthor'' board may have as few as 4 squares filled
-in, which leads to more ambiguous cases and potentially many solutions for a
-given puzzle.
+
+\section{Related Work}
+There has been research in the area of finding cpu and memory efficient
+encodings of sudoku as a SAT problem\cite{Lynce2006, Kwon2005}. Both papers
+look at a way to get better performance from a SAT solver on the sudoku
+problem. \textit{Sudoku as a SAT Problem} simply presents an extended encoding
+which generates more rules for the board, which limit the number of ambiguities
+that the SAT solver must attempt to solve, thus increasing the CPU performance.
+The full extended encoding is a $O(n^4)$ algoroithm, so as the board size
+grows, the feasibility of generating the necessary clauses drops.
+\textit{Optimized CNF Encoding for Sudoku Puzzles} looks at obtaining good
+results from the SAT solver, but also good results from the encoding process
+itself\cite{Kwon2005}, decreasing the cpu time, memory requirements,and the
+number of clauses to be generated. Our paper does not look into the efficient
+encoding, only extended and minimal encodings.
 
 \section{Methodologies}
 To test the benefits and drawbacks of the presented minimal and extended
-encodings, we performed the following test to determine how each scales across
-the difficulty of the puzzle and the size of the puzzle. The puzzles we used
-for testing purposes are available in the GitHub
-repository\footnote{\url{https://github.com/etcwilde/sudokusolver}}.\\
-
-We ran the following tests:
+encodings, we performed the following tests to determine how each encoding
+scales across the difficulty of the puzzle and the size of the puzzle. The
+puzzles we used for testing purposes are available in the GitHub repository.\\
 \begin{enumerate}
 	\item Minimal encoding on $9 \times 9$ puzzles of ``easy'', ``medium'', and
 		``Lex Luthor'' difficulty levels.
@@ -133,22 +126,41 @@ We ran the following tests:
 We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz
 with 4Gb of RAM.
 
+\subsection{Data sample}
+We are using an online board
+generator\footnote{\url{http://sudoku-puzzles.merschat.com/}} with difficulties
+ranging from ``easy'' to ``Lex Luthor''. Easier puzzles have many blocks
+originally filled in, whereas puzzles at ``Lex Luthor'' difficulty only have a
+few positions filled in, adding more potentially ambiguous cases. On a $9
+\times 9$ board, an ``easy'' board may have more than 50\% of the squares
+filled in, whereas a ``Lex Luthor'' board may have as few as 4 squares filled
+in, which leads to more ambiguous cases and potentially many solutions for a
+given puzzle.
+
 \section{Results}
 This section contains the results of the experiment.
-
+The results are generated on a  3rd Gen. intel core i5-3337U cpu clocked at
+1.80Ghz with 4Gb of RAM using ``minisat''. The resulting times only include the
+reported time taken for the SAT solver to run, not the time for the encoder to
+run on each puzzle.\\\\
+\newpage
 \subsection{Test 1: Minimal encoding on $9 \times 9$ puzzles of ``easy'', ``medium'',
 and ``Lex Luthor'' difficulty levels.}
 \FloatBarrier
-\begin{table}[htbp]
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy 		& 1895 & 729 & 0.00 \\
-		Medium 		& 1926 & 729 & 0.00 \\
-		Lex Luthor 	& 7246 & 729 & 0.00
+		Difficulty & Variables & Clauses & Parse time (s) \\\hline
+		Easy 		& 729 & 1895 & 0.00 \\
+		Medium 		& 729 & 1926 & 0.00 \\
+		Lex Luthor 	& 729 & 7246 & 0.00
 	\end{tabular}
 	\caption{Minimal $9 \times 9$ Parse Information}
-	\label{tab:summary}
+	\label{tab:minimal_9x9_parse}
+\end{table}
+\begin{table}[!h]
+	\centering
+
 	\begin{tabular}{c | l l p{20pt} p{20pt} l}
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -157,35 +169,26 @@ and ``Lex Luthor'' difficulty levels.}
 		Lex Luthor 	& 19.00 & 0.003333 	& 95 & 4 & 851
 	\end{tabular}
 	\caption{Minimal $9 \times 9$ Processing Information}
-	\label{tab:summary}
+	\label{tab:minimal_9x9_proc}
 \end{table}
 \FloatBarrier
-% \begin{table}[!h]
-% 	\centering
-% 	\begin{tabular}{c | l l p{20pt} p{20pt} l}
-% 		Difficulty & Memory & Time (s) & Decisions &
-% 		Conflicts & Propagations \\\hline
-% 		Easy 		& 19.00 & 0 		& 1  & 0 & 729\\
-% 		Medium 		& 19.00 & 0 		& 5  & 0 & 729\\
-% 		Lex Luthor 	& 19.00 & 0.003333 	& 95 & 4 & 851
-% 	\end{tabular}
-% 	\caption{Minimal $9 \times 9$ Processing Information}
-% 	\label{tab:summary}
-% \end{table}
-\newpage
+
 \subsection{Test 2: Minimal encoding on unsolvable $9 \times 9$ puzzles of ``easy'',
 ``medium'' and ``Lex Luthor'' difficult levels.}
 \FloatBarrier
-\begin{table}[htbp]
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy 		& 1863 & 729 & 0.00 \\
-		Medium 		& 1813 & 729 & 0.00 \\
-		Lex Luthor 	& 6864 & 729 & 0.00
+		Difficulty & Variables &  Clauses & Parse time (s) \\\hline
+		Easy 		& 729 & 1863 & 0.00 \\
+		Medium 		& 729 & 1813 & 0.00 \\
+		Lex Luthor 	& 729 & 6864 & 0.00
 	\end{tabular}
 	\caption{Unsolvable Minimal $9 \times 9$ Parse Information}
-	\label{tab:summary}
+	\label{tab:minimal_9x9_unsolvable_parse}
+\end{table}
+\begin{table}[!h]
+	\centering
 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -194,35 +197,26 @@ and ``Lex Luthor'' difficulty levels.}
 		Lex Luthor 	& 19.00 & 0 	   & 86 & 53 & 2518
 	\end{tabular}
 	\caption{Unsolvable Minimal $9 \times 9$ Processing Information}
-	\label{tab:summary}
+	\label{tab:minimal_9x9_unsolvable_proc}
 \end{table}
 \FloatBarrier
-% \begin{table}[!h]
-% 	\centering
-% 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
-% 		Difficulty & Memory & Time (s) & Decisions &
-% 		Conflicts & Propagations \\\hline
-% 		Easy 		& 19.00 & 0.003333 & 0  & 0  & 646 \\
-% 		Medium 		& 19.00 & 0.003333 & 0  & 0  & 512 \\
-% 		Lex Luthor 	& 19.00 & 0 	   & 86 & 53 & 2518
-% 	\end{tabular}
-% 	\caption{Unsolvable Minimal $9 \times 9$ Processing Information}
-% 	\label{tab:summary}
-% \end{table}
 
 \subsection{Test 3: Extended encoding on $9 \times 9$ puzzles of ``easy'', ``medium'',
 and ``Lex Luthor'' difficulty levels.}
 \FloatBarrier
-\begin{table}[htbp]
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy 		& 1895 & 729 & 0.00 \\
-		Medium 		& 1953 & 729 & 0.00 \\
-		Lex Luthor 	& 9217 & 729 & 0.00
+		Difficulty & Variables & Clauses & Parse time (s) \\\hline
+		Easy 		& 729 & 1895 & 0.00 \\
+		Medium 		& 729 & 1953 & 0.00 \\
+		Lex Luthor 	& 729 & 9217 & 0.00
 	\end{tabular}
 	\caption{Extended $9 \times 9$ Parse Information}
-	\label{tab:summary}
+	\label{tab:extended_9x9_parse}
+\end{table}
+\begin{table}[!h]
+	\centering
 	\begin{tabular}{c | l l p{20pt} p{20pt} l}
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -231,23 +225,9 @@ and ``Lex Luthor'' difficulty levels.}
 		Lex Luthor 	& 19.00 & 0 	& 64 & 0 & 729
 	\end{tabular}
 	\caption{Extended $9 \times 9$ Processing Information}
-	\label{tab:summary}
+	\label{tab:extended_9x9_proc}
 \end{table}
 \FloatBarrier
-% \begin{table}[!h]
-% 	\centering
-% 	\begin{tabular}{c | l l p{20pt} p{20pt} l}
-% 		Difficulty & Memory & Time (s) & Decisions &
-% 		Conflicts & Propagations \\\hline
-% 		Easy 		& 19.00 & 0 	& 1  & 0 & 729\\
-% 		Medium 		& 19.00 & 0 	& 2  & 0 & 729\\
-% 		Lex Luthor 	& 19.00 & 0 	& 64 & 0 & 729
-% 	\end{tabular}
-% 	\caption{Extended $9 \times 9$ Processing Information}
-% 
-% 	\label{tab:summary}
-% \end{table}
-
 
 \subsection{Test 4: Extended encoding on unsolvable $9 \times 9$ puzzles of ``easy'',
 ``medium'' and ``Lex Luthor'' difficult levels.}
@@ -255,13 +235,16 @@ and ``Lex Luthor'' difficulty levels.}
 \begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy 		& 1863 & 729 & 0.00 \\
-		Medium 		& 1813 & 729 & 0.00 \\
-		Lex Luthor 	& 8429 & 729 & 0.00
+		Difficulty & Variables & Clauses & Parse time (s) \\\hline
+		Easy 		& 729 & 1863 & 0.00 \\
+		Medium 		& 729 & 1813 & 0.00 \\
+		Lex Luthor 	& 729 & 8429 & 0.00
 	\end{tabular}
-	\caption{Unsolvable Minimal $9 \times 9$ Parse Information}
-	\label{tab:summary}
+	\caption{Unsolvable Extended $9 \times 9$ Parse Information}
+	\label{tab:extended_9x9_unsolvable_parse}
+\end{table}
+\begin{table}[!h]
+	\centering
 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -269,37 +252,28 @@ and ``Lex Luthor'' difficulty levels.}
 		Medium 		& 19.00 & 0.003333 & 0 & 0  & 512 \\
 		Lex Luthor 	& 19.00 & 0.003333 & 0 & 0 & 252
 	\end{tabular}
-	\caption{Unsolvable Minimal $9 \times 9$ Processing Information}
-	\label{tab:summary}
+	\caption{Unsolvable Extended $9 \times 9$ Processing Information}
+	\label{tab:extended_8x8_unsolvable_proc}
 \end{table}
 \FloatBarrier
 
-% \begin{table}[!h]
-% 	\centering
-% 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
-% 		Difficulty & Memory & Time (s) & Decisions &
-% 		Conflicts & Propagations \\\hline
-% 		Easy 		& 19.00 & 0 & 0  & 0  & 646 \\
-% 		Medium 		& 19.00 & 0.003333 & 0 & 0  & 512 \\
-% 		Lex Luthor 	& 19.00 & 0.003333 & 0 & 0 & 252
-% 	\end{tabular}
-% 	\caption{Unsolvable Minimal $9 \times 9$ Processing Information}
-% 	\label{tab:summary}
-% \end{table} \evan{There were 0 restarts for easy, medium}
-
-\subsection{Test 5: Minimal encoding versus extended encoding on $16 \times 16$ puzzles of
-``easy'', ``medium'', and ``Lex Luthor'' difficulty levels.}
+\subsection{Test 5: Minimal encoding on $16 \times 16$ puzzles of ``easy'',
+``medium'', and ``Lex Luthor'' difficulty levels.}
 \FloatBarrier
 \begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy	& 8716 & 4096 & 0.02\\
-		Medium 	& 30977 & 4096 & 0.02\\
-		Lex Luthor & 73448 & 4096 & 0.02\\
+		Difficulty & Variables & Clauses & Parse time (s) \\\hline
+		Easy		& 4096 & 8716  & 0.02\\
+		Medium 		& 4096 & 30977 & 0.02\\
+		Lex Luthor 	& 4096 & 73448 & 0.02\\
 	\end{tabular}
 	\caption{Minimal $16 \times 16$ Parse Information}
-	\label{tab:summary}
+	\label{tab:minimal_16x16_parse}
+\end{table}
+\begin{table}[!h]
+	\centering
+
 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -308,23 +282,9 @@ and ``Lex Luthor'' difficulty levels.}
 		Lex Luthor 	& 21.00 & 0.036666 & 2446 & 272 & 27704
 	\end{tabular}
 	\caption{Minimal $16 \times 16$ Processing Information}
-	\label{tab:summary}
+	\label{tab:minimal_16x16_proc}
 \end{table}
 \FloatBarrier
-
-% \begin{table}[!h]
-% 	\centering
-% 	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
-% 		Difficulty & Memory & Time (s) & Decisions &
-% 		Conflicts & Propagations \\\hline
-% 		Easy 		& 20.00 & 0.016666 & 0  & 0  & 1367\\
-% 		Medium 		& 20.00 & 0.026666 & 267 & 73 & 15880\\
-% 		Lex Luthor 	& 21.00 & 0.036666 & 2446 & 272 & 27704
-% 	\end{tabular}
-% 	\caption{Minimal $16 \times 16$ Processing Information}
-% 	\label{tab:summary} \evan{Easy had 0 restarts, medium had 1 restart,
-% 	lex 3 restarts}
-% \end{table}
 
 \subsection{Test 6: Extended encoding	on $16 \times 16$ puzzles of ``easy'',
 ``medium'', and ``Lex Luthor'' difficulty levels.}
@@ -332,17 +292,17 @@ and ``Lex Luthor'' difficulty levels.}
 \begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
-		Difficulty & Clauses & Variables & Parse time (s) \\\hline
-		Easy	& 8761 & 4096 & 0.02\\
-		Medium 	& 32205 & 4096 & 0.03\\
-		Lex Luthor & & 4096 & \\
+		Difficulty & Variables & Clauses & Parse time (s) \\\hline
+		Easy		& 4096 & 8761  & 0.02\\
+		Medium 		& 4096 & 32205 & 0.03\\
+		Lex Luthor 	& 4096 & 91595 & 0.04\\
 	\end{tabular}
 	\caption{Extended $16 \times 16$ Parse Information}
-	\label{tab:summary}
+	\label{tab:extended_16x16_parse}
 \end{table}
-
 \begin{table}[!h]
 	\centering
+
 	\begin{tabular}{c | l l p{20pt} p{20pt} l }
 		Difficulty & Memory & Time (s) & Decisions &
 		Conflicts & Propagations \\\hline
@@ -351,28 +311,113 @@ and ``Lex Luthor'' difficulty levels.}
 		Lex Luthor 	& 23.00 & 0.029999 & 444 & 4 & 4371
 	\end{tabular}
 	\caption{Extended $16\times 16$ Processing Information}
-	\label{tab:summary}
+	\label{tab:extended_16x16_proc}
 \end{table}
 \FloatBarrier
 
-
-
+\newpage
 \section{Discussion}
-Originally, we believed that the minimal encoding would run faster; however, in
-all test cases, the number of propagations, decisions, and cpu time decreased
-from the minimal encoding to the extending encoding.
+Our original hypothesis was that the minimal encoding would take less cpu time;
+however, in all test cases, the number of propagations, decisions, and cpu time
+decreased from the minimal encoding to the extended encoding.
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{cc | p{4pt} p{13pt} p{4pt} c | p{4pt} p{13pt} p{4pt} c}
+		& & \multicolumn{4}{c | } {Minimal Encoding} & \multicolumn{4}
+		{c} {Extended Encoding}\\
+		size & level & vars & clauses & dec & prop & vars & clauses &
+		dec & prop \\\hline
+		$9\times9$ & easy & 	729 & 1895 & 1 & 729
+		& 729 & 1895 & 1 & 729\\
+		$9\times9$ & medium & 	729 & 1926 & 5 & 729
+		& 729 & 1953 & 2 & 729 \\
+		$9\times9$ & lex & 	729 & 7246 & 95 & 851
+		& 729 & 9217 & 64& 729\\\hline
+
+		$16\times16$ & easy &	4096 & 8716  & 0 & 1367 &
+		4096 & 8761 & 0 & 1367\\
+		$16\times16$ & medium &	4096 & 30977 & 267 & 15880 &
+		4096 & 32205 & 13 & 4214\\
+		$16\times16$ & lex & 	4096 & 73448 & 2446 & 27704 &
+		4096 & 91595 & 444 & 4371\\
+
+	\end{tabular}
+	\caption{Minimal encoding versus Extended encoding on solvable puzzles}
+	\label{tab:summary_solvable}
+\end{table}
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{cc | p{4pt} p{10pt} p{4pt} c | p{4pt} p{10pt} p{4pt} c}
+		& & \multicolumn{4}{c | } {Minimal Encoding} & \multicolumn{4}
+		{c} {Extended Encoding}\\
+		size & level & vars & clauses & dec & prop & vars & clauses &
+		dec & prop \\\hline
+		$9\times9$ & easy 	& 729 & 1863 & 0  & 646 &
+		729 & 1863 & 0 & 646 \\
+		$9\times9$ & medium 	& 729 & 1813 & 0  & 512 &
+		729 & 1813 & 0 & 512 \\
+		$9\times9$ & lex 	& 729 & 6864 & 86 & 2518 &
+		729 & 8429 & 0 & 252 \\
+	\end{tabular}
+	\caption{Minimal encoding versus Extended encoding on unsolvable puzzles}
+	\label{tab:summary_unsolvable}
+\end{table}
+\FloatBarrier
+
+In table \ref{tab:summary_solvable}, we can see that the growth of the
+decisions and propagations over difficulty levels is less given an extended
+encoding of the board over a minimal encoding of the board. This trend holds
+true as the size of the puzzle grows.
+
+In table \ref{tab:summary_unsolvable}, we can see that both the extended
+encoding and the minimal encoding ran in the same time for unsolvable puzzles
+where there were no possible ambiguities. The ``Lex Luthor'' puzzle does not
+necessarily have a single solution so we see deviation between the two methods.
+In this case, we can see that the extended encoding was able to arrive at the
+conclusion that the board was unsatisfiable in fewer decisions and
+propagations.
 
 \subsection{Limitations}
 Theoretically our program can use any $n \times n$ puzzle, so long a $n$ is a
-perfect square; however, due to due to the limitations of encoding numbers
+perfect square; however, due to the limitations of encoding numbers
 larger than $35$, our program can only take puzzles up to $25 \times 25$. A
 possible method of extending the usage of the solver is to allow a delimiter
 between values in each cell.
 
+\section{Future Work}
+As stated\cite{Kwon2005}, the growth of the extended encoding is $O(n^4)$,
+which may cause the total runtime of the extended encoding to be larger than
+the minimal encoding simply due to the encoding process. It would be
+interesting to further the study on $81\times 81$ puzzles and $100 \times 100$
+puzzles to see at what point the extended encoding is no-longer feasible due to
+the encoding runtime. Furthermore, it would be interesting to investigate the
+efficient encoding and compare that against the extended and minimal encodings.
+
+\section{Threats to Validity}
+In the paper presented by Lynce it states that the extended encoding
+requires two extra properties: that the puzzles only have one solution and
+that puzzles can be solved with only reasoning. The boards we were testing
+with, specifically the ``Lex Luther'' difficulty are not guaranteed to maintain
+these extra properties. From visual inspection, the minimal and extended
+encodings were able to correctly generate two correct solutions for the same
+puzzle, but decreasing the accuracy of the comparison.
+
+Our original hypothesis was using cpu time as a measurement of difficulty , but
+we found that the number of propagations and decisions was a better measurement
+of the difficulty of a given puzzle.
+
 \section{Conclusion}
 We found that extended encoding ran with fewer propagations, decisions, and cpu
-time than minimal encoding, but with higher memory usage.
+time than minimal encoding, but with higher memory usage and more clauses. The
+growth of the clauses may limit the size of boards that the extended encoding
+scheme is feasible for encoding.
 
 Our program is able to run on $n \times n$ puzzles up to $n = 25$ where $n$ is
 a perfect square.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\balance
+
 \end{document}
