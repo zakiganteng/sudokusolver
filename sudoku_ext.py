@@ -152,6 +152,7 @@ dimacs_output = "p cnf {0} {1}\n".format(variables, clauses) + dimacs_output
 
 # Write to file
 args.tmp_out.write(dimacs_output)
+args.tmp_out.close()
 
 
 # -----------------------------------------
