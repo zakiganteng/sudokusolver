@@ -122,10 +122,10 @@ The tests we ran are;
 		``Lex Luthor'' difficulty levels.
 	\item Extended encoding on unsolvable 9x9 puzzles of ``easy'',
 		``medium'' and ``Lex Luthor'' difficult levels.
-	\item Minimal encoding versus extended encoding on 16x16 puzzles of
+	\item Minimal encoding on 16x16 puzzles of
 		``easy'', ``medium'', and ``Lex Luthor'' difficulty levels.
-	\item Minimal encoding versus extended encoding on 4 25x25 puzzles of
-		``Lex Luthor'' difficulty level.
+	\item Extended encoding	on 16x16 puzzles of
+		``easy'', ``medium'', and ``Lex Luthor'' difficulty levels.
 \end{enumerate}
 
 We sample the results on a 3rd Gen. intel core i5-3337U cpu clocked at 1.80Ghz
@@ -138,7 +138,7 @@ description for the section}
 \subsection{Test 1: Minimal encoding on 9x9 puzzles of ``easy'', ``medium'',
 and ``Lex Luthor'' difficulty levels.}
 
-\begin{table}[htbp]
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{c | l l l}
 		Difficulty & Clauses & Variables & Parse time (s) \\\hline
@@ -199,62 +199,125 @@ and ``Lex Luthor'' difficulty levels.}
 
 \subsection{Test 3: Extended encoding on 9x9 puzzles of ``easy'', ``medium'',
 and ``Lex Luthor'' difficulty levels.}
-\begin{table}[htbp]
+
+\begin{table}[!h]
 	\centering
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy 		& 1895 & 729 & 0.00 \\
+		Medium 		& 1953 & 729 & 0.00 \\
+		Lex Luthor 	& 9217 & 729 & 0.00
+	\end{tabular}
 	\caption{Extended 9x9 Parse Information}
 	\label{tab:summary}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[!h]
 	\centering
+	\begin{tabular}{c | l l p{20pt} p{20pt} l}
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy 		& 19.00 & 0 	& 1  & 0 & 729\\
+		Medium 		& 19.00 & 0 	& 2  & 0 & 729\\
+		Lex Luthor 	& 19.00 & 0 	& 64 & 0 & 729
+	\end{tabular}
 	\caption{Extended 9x9 Processing Information}
+
+	\label{tab:summary}
+	For all difficulties, the number of restarts was 1.
 \end{table}
+
 
 \subsection{Test 4: Extended encoding on unsolvable 9x9 puzzles of ``easy'',
 ``medium'' and ``Lex Luthor'' difficult levels.}
 
 \begin{table}[!h]
 	\centering
-	\caption{Unsolvable Extended 9x9 Parse Information}
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy 		& 1863 & 729 & 0.00 \\
+		Medium 		& 1813 & 729 & 0.00 \\
+		Lex Luthor 	& 8429 & 729 & 0.00
+	\end{tabular}
+	\caption{Unsolvable Minimal 9x9 Parse Information}
+
+	\label{tab:summary}
 \end{table}
 
 \begin{table}[!h]
 	\centering
-	\caption{Unsolvable Extended 9x9 Processing Information}
+	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy 		& 19.00 & 0 & 0  & 0  & 646 \\
+		Medium 		& 19.00 & 0.003333 & 0 & 0  & 512 \\
+		Lex Luthor 	& 19.00 & 0.003333 & 0 & 0 & 252
+	\end{tabular}
+	\caption{Unsolvable Minimal 9x9 Processing Information}
+	\label{tab:summary}
+\end{table} \evan{There were 0 restarts for easy, medium}
+
+\subsection{Test 5: Minimal encoding versus extended encoding on 16x16 puzzles of
+``easy'', ``medium'', and ``Lex Luthor'' difficulty levels.}
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy	& 8716 & 4096 & 0.02\\
+		Medium 	& 30977 & 4096 & 0.02\\
+		Lex Luthor & 73448 & 4096 & 0.02\\
+	\end{tabular}
+	\caption{Minimal 16x16 Parse Information}
+	\label{tab:summary}
 \end{table}
 
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy 		& 20.00 & 0.016666 & 0  & 0  & 1367\\
+		Medium 		& 20.00 & 0.026666 & 267 & 73 & 15880\\
+		Lex Luthor 	& 21.00 & 0.036666 & 2446 & 272 & 27704
+	\end{tabular}
+	\caption{Minimal 16x16 Processing Information}
+	\label{tab:summary} \evan{Easy had 0 restarts, medium had 1 restart,
+	lex 3 restarts}
+\end{table}
 
+\subsection{Test 6: Extended encoding	on 16x16 puzzles of ``easy'',
+``medium'', and ``Lex Luthor'' difficulty levels.}
 
-\subsection{Test 1}
-Minimal encoding versus extended encoding on a medium puzzle:
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{c | l l l}
+		Difficulty & Clauses & Variables & Parse time (s) \\\hline
+		Easy	& 8761 & 4096 & 0.02\\
+		Medium 	& 32205 & 4096 & 0.03\\
+		Lex Luthor & & 4096 & \\
+	\end{tabular}
+	\caption{Extended 16x16 Parse Information}
+	\label{tab:summary}
+\end{table}
 
-\subsection{Test 2}
-Minimal encoding versus extended encoding on a difficult puzzle:
-
-
-\subsection{Test 3}
-Minimal encoding versus extended encoding on an easy puzzle:
-
-\subsection{Test 4}
-Minimal encoding versus extended encoding on an unsolvable puzzle:
-
-\subsection{Test 5}
-Minimal versus extended encoding on a 16x16 puzzle:
-
-\subsection{Test 6}
-Sum times from 4 different puzzles solved with the minimal encoding and compute
-the average.
-
-
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{c | l l p{20pt} p{20pt}  l }
+		Difficulty & Memory & Time (s) & Decisions &
+		Conflicts & Propagations \\\hline
+		Easy 		& 20.00 & 0.019999 & 0 & 0 & 1367\\
+		Medium 		& 20.00 & 0.033333 & 13 & 3 & 4214\\
+		Lex Luthor 	& 23.00 & 0.029999 & 444 & 4 & 4371
+	\end{tabular}
+	\caption{Extended 16x16 Processing Information}
+	\label{tab:summary}
+\end{table}
 
 \subsection{Limitations}
 Theoretically our program can use any $n$x$n$ puzzle, so long a $n$ is a
 perfect square; however, due to limitations of encoding numbers larger than z,
 our program can only take puzzles up to 36x36. A possible method of extending
 the usage of the solver is to allow a delimiter between values in each cell.
-
-
-Can't do 4x4 puzzles.
 
 \section{Discussion}
 From tests 1, 2, 3, 4, and 5 it was found that...  It seems like the minimal
