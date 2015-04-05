@@ -6,11 +6,13 @@ University of Victoria | CSC 320 | Spring 2015<br>
 Professor: Bruce Kapron
 
 ## Submitted Documents
-   Filename         | Description                                                                   
+   Filename         | Description
    ---------------- | ------------------------------------------------------------------------------
-   sudoku.py        | Solves Sudoku using the minimal encoding described in `Sudoku-as-SAT.pdf` 
+   sudoku.py        | Solves Sudoku using the minimal encoding described in `Sudoku-as-SAT.pdf`
    sudoku_ext.py    | Solved Sudoku using the extended encoding described in `CMU_Sudoku-as-SAT.pdf`
-   report.md        | The results of our work
+   docs/Sudoku_As_SAT.pdf        | The results of our work
+   tests/puzzles/   | Directory containing all of the test puzzles
+
 
 ## Usage
 ### Requirements
@@ -22,13 +24,9 @@ Professor: Bruce Kapron
 ### Execution
 
 `python3 <inputfile> <outputfile> <minisat_executable> <tmp_out> <tmp_in>`
-    
+
     - inputfile contains the unsolved board
     - outputfile will contain the solved board
     - minisat_executable is the path to the minisat executable
     - tmp_out is the generated rules for the sat solver
     - tmp_in is the output from the sat solver to be converted back to a sudoku board
-
-
-    
-
