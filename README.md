@@ -12,6 +12,8 @@ Professor: Bruce Kapron
    sudoku_ext.py    | Solved Sudoku using the extended encoding described in `CMU_Sudoku-as-SAT.pdf`
    docs/Sudoku_As_SAT.pdf        | The results of our work
    tests/puzzles/   | Directory containing all of the test puzzles
+   print_functions.py   | Contains custom print functions (for "pretty printing") imported by our sudoku solvers
+   xmath.py         | Contains custom math functions imported by our sudoku solvers
 
 
 ## Usage
